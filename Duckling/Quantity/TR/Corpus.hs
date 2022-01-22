@@ -9,7 +9,6 @@
 
 module Duckling.Quantity.TR.Corpus
   ( corpus
-  , latentCorpus
   ) where
 
 import Prelude
@@ -23,29 +22,9 @@ import Duckling.Testing.Types
 corpus :: Corpus
 corpus = (testContext { locale = makeLocale TR Nothing }, testOptions, allExamples)
 
-
-latentCorpus :: Corpus
-latentCorpus = (testContext, testOptions {withLatent = True}, latentExamples)
-  where
-    latentExamples = concat
-      [
-      examples (simple Unnamed 4 Nothing)
-                [ "4 civarında"
-                , "dört"
-                , "~ dört"
-                ]
-      ,
-      examples (simple Unnamed 38.5 Nothing)
-                [ "38.5 gibi"
-                ]
-      ]
-
 allExamples :: [Example]
 allExamples = concat
-  [ examples (simple Pound 2 (Just "et"))
-             [ "iki libre et"
-             ]
-  , examples (simple Gram 2 Nothing)
+  [ examples (simple Gram 2 Nothing)
              [ "2 gram"
              , "0.002 kg"
              , "2 g."

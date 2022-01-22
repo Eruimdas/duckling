@@ -642,6 +642,8 @@ library
                      , Duckling.Quantity.RO.Rules
                      , Duckling.Quantity.RU.Corpus
                      , Duckling.Quantity.RU.Rules
+                     , Duckling.Quantity.TR.Corpus
+                     , Duckling.Quantity.TR.Rules
                      , Duckling.Quantity.ZH.Corpus
                      , Duckling.Quantity.ZH.Rules
                      , Duckling.Quantity.Helpers

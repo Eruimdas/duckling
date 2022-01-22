@@ -9,7 +9,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
-module Duckling.Quantity.EN.Rules
+module Duckling.Quantity.TR.Rules
   ( rules
   ) where
 
@@ -110,7 +110,7 @@ ruleIntervalBetweenNumeral = Rule
       [ Predicate isPositive
       , regex "ila|ile"
       , Predicate isSimpleQuantity
-      , regex "arasında|\s"
+      , regex "arasında|\\s"
       ]
     , prod = \case
         (_:
@@ -131,7 +131,7 @@ ruleIntervalBetween = Rule
       [ Predicate isSimpleQuantity
       , regex "ila|ile"
       , Predicate isSimpleQuantity
-      , regex "arasında|\s"
+      , regex "arasında|\\s"
       ]
     , prod = \case
         (_:

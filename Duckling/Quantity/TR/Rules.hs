@@ -33,21 +33,17 @@ import qualified Duckling.Quantity.Types as TQuantity
 quantities :: [(Text, String, TQuantity.Unit)]
 quantities =
   [ ("<quantity> cups", "(bardak?)", TQuantity.Cup)
-  , ("<quantity> grams", "(((m(ili)?[.]?)|(k(ilo)?)[.]?)?g(ram)?[.]?)[.]?", TQuantity.Gram)
-  , ("<quantity> lb", "((lb|libre))", TQuantity.Pound)
+  , ("<quantity> grams", "(((m(ili)?[.]?)|(k(ilo)?)?[.]?)?g(ram)?[.]?)[.]?", TQuantity.Gram)
+  , ("<quantity> pounds", "((lb|libre))", TQuantity.Pound)
+  , ("<quantity> tablespoons", "(kaşık)", TQuantity.Tablespoon)
+  , ("<quantity> teaspoons", "(çay kaşığı)", TQuantity.Teaspoon)
   , ("<quantity> oz", "((ons?)|oz)", TQuantity.Ounce)
   ]
 
 opsMap :: HashMap Text (Double -> Double)
 opsMap = HashMap.fromList
   [ ( "miligram" , (/ 1000))
-  , ( "mg"        , (/ 1000))
-  , ( "m.g"       , (/ 1000))
-  , ( "m.g."      , (/ 1000))
   , ( "kilogram"  , (* 1000))
-  , ( "kg"        , (* 1000))
-  , ( "k.g"       , (* 1000))
-  , ( "k.g."      , (* 1000))
   ]
 
 ruleNumeralQuantities :: [Rule]
@@ -80,7 +76,7 @@ ruleAQuantity = map go quantities
 
 ruleQuantityOfProduct :: Rule
 ruleQuantityOfProduct = Rule
-  { name = "<quantity> ürün"
+  { name = "<quantity> of product"
   , pattern =
     [ dimension Quantity
     , regex "(\\w+)"

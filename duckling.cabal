@@ -1115,6 +1115,7 @@ test-suite duckling-test
                      , Duckling.Quantity.PT.Tests
                      , Duckling.Quantity.RO.Tests
                      , Duckling.Quantity.RU.Tests
+                     , Duckling.Quantity.TR.Tests
                      , Duckling.Quantity.ZH.Tests
                      , Duckling.Quantity.Tests
 

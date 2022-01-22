@@ -15,12 +15,13 @@ module Duckling.Quantity.TR.Corpus
 import Prelude
 import Data.String
 
+import Duckling.Locale
 import Duckling.Quantity.Types
-import Duckling.Resolve (Options(..))
+import Duckling.Resolve
 import Duckling.Testing.Types
 
 corpus :: Corpus
-corpus = (testContext, testOptions, allExamples)
+corpus = (testContext { locale = makeLocale TR Nothing }, testOptions, allExamples)
 
 
 latentCorpus :: Corpus

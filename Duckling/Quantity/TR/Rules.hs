@@ -33,7 +33,7 @@ import qualified Duckling.Quantity.Types as TQuantity
 quantities :: [(Text, String, TQuantity.Unit)]
 quantities =
   [ ("<quantity> cups", "(bardak?)", TQuantity.Cup)
-  , ("<quantity> grams", "(((m(ili)?[.]?)|(k(ilo)?)?[.]?)?g(ram)?[.]?)[.]?", TQuantity.Gram)
+  , ("<quantity> grams", "(((m(ili)?[.]?)|(k(ilo)?)[.]?)?g(ram)?[.]?)[.]?", TQuantity.Gram)
   , ("<quantity> pounds", "((lb|libre))", TQuantity.Pound)
   , ("<quantity> tablespoons", "(kaşık)", TQuantity.Tablespoon)
   , ("<quantity> teaspoons", "(çay kaşığı)", TQuantity.Teaspoon)
@@ -42,8 +42,14 @@ quantities =
 
 opsMap :: HashMap Text (Double -> Double)
 opsMap = HashMap.fromList
-  [ ( "miligram" , (/ 1000))
+  [ ( "miligram"  , (/ 1000))
+  , ( "mg"        , (/ 1000))
+  , ( "m.g"       , (/ 1000))
+  , ( "m.g."      , (/ 1000))
   , ( "kilogram"  , (* 1000))
+  , ( "kg"        , (* 1000))
+  , ( "k.g"       , (* 1000))
+  , ( "k.g."      , (* 1000))
   ]
 
 ruleNumeralQuantities :: [Rule]
@@ -60,32 +66,6 @@ ruleNumeralQuantities = map go quantities
           where value = getValue opsMap match $ TNumeral.value nd
         _ -> Nothing
       }
-
-ruleAQuantity :: [Rule]
-ruleAQuantity = map go quantities
-  where
-    go :: (Text, String, TQuantity.Unit) -> Rule
-    go (name, regexPattern, u) = Rule
-      { name = name
-      , pattern = [ regex ("an? " ++ regexPattern) ]
-      , prod = \case
-        (Token RegexMatch (GroupMatch (match:_)):
-         _) -> Just . Token Quantity $ quantity u $ getValue opsMap match 1
-        _ -> Nothing
-      }
-
-ruleQuantityOfProduct :: Rule
-ruleQuantityOfProduct = Rule
-  { name = "<quantity> of product"
-  , pattern =
-    [ dimension Quantity
-    , regex "(\\w+)"
-    ]
-  , prod = \case
-    (Token Quantity qd:Token RegexMatch (GroupMatch (product:_)):_) ->
-      Just . Token Quantity $ withProduct (Text.toLower product) qd
-    _ -> Nothing
-  }
 
 rulePrecision :: Rule
 rulePrecision = Rule
@@ -230,8 +210,7 @@ ruleQuantityLatent = Rule
 
 rules :: [Rule]
 rules =
-  [ ruleQuantityOfProduct
-  , ruleIntervalMin
+  [ ruleIntervalMin
   , ruleIntervalMax
   , ruleIntervalBetweenNumeral
   , ruleIntervalBetween
@@ -241,4 +220,3 @@ rules =
   , ruleQuantityLatent
   ]
   ++ ruleNumeralQuantities
-  ++ ruleAQuantity
